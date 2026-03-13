@@ -1,0 +1,9 @@
+#pragma once
+
+#include "/Engine/Public/Platform.ush"
+
+[numthreads(NUM_THREADS_X, NUM_THREADS_Y, 1)]
+void CharacterDot(uint3 DispatchThreadId : SV_DispatchThreadID)
+{
+    
+}
