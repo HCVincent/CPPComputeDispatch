@@ -2,8 +2,29 @@
 
 #include "/Engine/Public/Platform.ush"
 
+uint Resolution;
+float2 Scale;
+float2 Origin;
+float2 Location;
+float Radius;
+RWTexture2D<float> OutTexture;
+
 [numthreads(NUM_THREADS_X, NUM_THREADS_Y, 1)]
 void CharacterDot(uint3 DispatchThreadId : SV_DispatchThreadID)
 {
+    if (DispatchThreadId.x >= Resolution || DispatchThreadId.y >= Resolution)
+    {
+        return;
+    }
+    const float TextureSize = 1.0 / float(Resolution);
+    const float U = (DispatchThreadId.x + 0.5) * TextureSize;
+    const float V = (DispatchThreadId.x + 0.5) * TextureSize;
+
+    const float X = ((U - 0.5) * Scale.x) + Origin.x;
+    const float Y = ((V - 0.5) * Scale.y) + Origin.y;
     
+    const float Mask = 1.0 - saturate(length(float2(X, Y) - Location) / Radius);
+    
+    OutTexture[uint2(DispatchThreadId.x, DispatchThreadId.y)] = Mask;
+    float4 Sample = TextureSize;
 }

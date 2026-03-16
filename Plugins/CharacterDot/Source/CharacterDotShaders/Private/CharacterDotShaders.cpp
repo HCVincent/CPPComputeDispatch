@@ -1,12 +1,14 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "CharacterDotShaders.h"
+#include "Interfaces/IPluginManager.h"
 
 #define LOCTEXT_NAMESPACE "FCharacterDotShadersModule"
 
 void FCharacterDotShadersModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	FString PluginShaderDir = FPaths::Combine(IPluginManager::Get().FindPlugin(TEXT("CharacterDot"))->GetBaseDir(), TEXT("Shaders/Private"));
+	AddShaderSourceDirectoryMapping(TEXT("/CharacterDotShaders"), PluginShaderDir);
 }
 
 void FCharacterDotShadersModule::ShutdownModule()
